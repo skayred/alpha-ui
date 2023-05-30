@@ -1,0 +1,23 @@
+worker_processes 4;
+
+events { worker_connections 1024; }
+
+http {
+    # what types to include
+    include       /etc/nginx/mime.types;
+    # what is the default one
+    default_type  application/octet-stream;
+
+    server {
+        listen 80;
+        add_header Cache-Control "no-store";
+        # Define the root file
+        root /var/www/build;
+        index index.html index.htm;
+
+        # The actual UI application
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }
+}
